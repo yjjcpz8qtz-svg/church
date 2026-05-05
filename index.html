@@ -3,89 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>은혜와 사랑</title>
+    <title>우리 교회</title>
     <style>
         :root { --point-color: #2e7d32; --bg-color: #f4f7f4; }
         body { font-family: 'Malgun Gothic', sans-serif; background-color: var(--bg-color); margin: 0; padding: 0; text-align: center; }
-        .header { background: #fff; padding: 20px; border-bottom: 3px solid var(--point-color); position: sticky; top: 0; z-index: 10; }
+        
+        /* 상단 문구: 요청하신 긴 문구에 맞춰 폰트 크기를 조절했습니다 */
+        .header { background: #fff; padding: 15px 10px; border-bottom: 3px solid var(--point-color); position: sticky; top: 0; z-index: 10; }
+        .header b { font-size: 1.1rem; color: var(--point-color); word-break: keep-all; line-height: 1.3; display: block; }
+        
         .container { max-width: 500px; margin: 0 auto; padding: 15px; }
         
         /* 영상 박스 */
-        .video-box { width: 100%; border-radius: 20px; overflow: hidden; background: #000; box-shadow: 0 8px 15px rgba(0,0,0,0.1); margin-bottom: 20px; position: relative; }
-        .video-box iframe, .video-box video { width: 100%; aspect-ratio: 16/9; display: block; border: none; }
+        .video-box { width: 100%; border-radius: 20px; overflow: hidden; background: #000; box-shadow: 0 8px 15px rgba(0,0,0,0.1); margin-bottom: 20px; position: relative; aspect-ratio: 16/9; }
+        .video-box iframe { position: absolute; top:0; left:0; width: 100%; height: 100%; border: none; }
 
-        /* 말씀 카드 */
         .message-card { background: white; border-radius: 20px; padding: 25px 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
-        #display-verse { font-size: 1.6rem; font-weight: 800; line-height: 1.5; word-break: keep-all; margin: 0; color: #1a1a1a; }
+        #display-verse { font-size: 1.5rem; font-weight: 800; line-height: 1.5; word-break: keep-all; margin: 0; color: #1a1a1a; }
 
-        /* 방문록 영역 */
         .guestbook-section { background: white; border-radius: 20px; padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: left; margin-bottom: 30px; }
-        .guestbook-title { font-weight: bold; font-size: 1.1rem; color: var(--point-color); margin-bottom: 15px; display: flex; align-items: center; }
-        
+        .guestbook-title { font-weight: bold; font-size: 1.1rem; color: var(--point-color); margin-bottom: 15px; }
         .input-group { display: flex; gap: 8px; margin-bottom: 15px; }
-        .input-group input { flex: 1; padding: 15px; border: 1px solid #ddd; border-radius: 12px; font-size: 1.1rem; }
-        .btn-send { padding: 0 20px; background: var(--point-color); color: white; border: none; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 1.1rem; }
+        .input-group input { flex: 1; padding: 12px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; }
+        .btn-send { padding: 0 15px; background: var(--point-color); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .comment-list { max-height: 250px; overflow-y: auto; }
+        .comment-item { padding: 10px 0; border-bottom: 1px dashed #eee; font-size: 0.95rem; }
 
-        .comment-list { max-height: 350px; overflow-y: auto; }
-        .comment-item { padding: 12px 0; border-bottom: 1px dashed #eee; font-size: 1.05rem; line-height: 1.4; }
-        .comment-text { color: #333; }
-        .comment-date { font-size: 0.8rem; color: #aaa; float: right; margin-top: 3px; }
-
-        .btn { width: 100%; padding: 20px; border: none; border-radius: 15px; font-size: 1.4rem; font-weight: bold; background: var(--point-color); color: white; cursor: pointer; }
-        .admin-link { display: block; margin-top: 40px; color: #aaa; font-size: 0.85rem; text-decoration: underline; cursor: pointer; }
+        .btn { width: 100%; padding: 18px; border: none; border-radius: 15px; font-size: 1.3rem; font-weight: bold; background: var(--point-color); color: white; cursor: pointer; }
+        .admin-link { display: block; margin-top: 30px; color: #bbb; font-size: 0.8rem; text-decoration: underline; cursor: pointer; }
         
-        #admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 100; padding: 20px; box-sizing: border-box; overflow-y: auto; }
-        .admin-input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 1rem; }
+        #admin-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 100; padding: 20px; box-sizing: border-box; }
+        .admin-input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
     </style>
 </head>
 <body>
 
-    <div class="header"><b style="color:var(--point-color)">은혜와 사랑</b></div>
+    <!-- 수정된 상단 문구 -->
+    <div class="header"><b>은혜로 하나되어 사랑으로 세워가는 우리</b></div>
 
     <div class="container">
-        <!-- 영상 영역 -->
         <div id="video-display" class="video-box">
-            <p style="color:white; padding:60px 0;">영상을 불러오고 있습니다...</p>
+            <p style="color:white; padding-top:20%;">관리자 모드에서 주소를 등록해주세요.</p>
         </div>
 
-        <!-- 말씀 카드 -->
         <div class="message-card">
-            <p id="display-verse">오늘도 주님의 은혜 안에서 평안하세요.</p>
+            <p id="display-verse">오늘도 평안하세요!</p>
         </div>
 
-        <!-- 방문록 영역 -->
         <div class="guestbook-section">
             <div class="guestbook-title">† 성도님 은혜의 한마디</div>
             <div class="input-group">
                 <input type="text" id="visitor-message" placeholder="은혜의 한마디를 남겨주세요">
                 <button class="btn-send" onclick="addComment()">등록</button>
             </div>
-            <div id="comment-list" class="comment-list">
-                <!-- 댓글 표시 구역 -->
-            </div>
+            <div id="comment-list" class="comment-list"></div>
         </div>
 
         <button class="btn" onclick="alert('주님의 이름으로 기도합니다. 아멘!')">🙏 아멘</button>
-        <span class="admin-link" onclick="openAdmin()">영상 및 말씀 관리자 모드</span>
+        <span class="admin-link" onclick="openAdmin()">영상 및 말씀 관리</span>
     </div>
 
-    <!-- 관리자 패널 -->
     <div id="admin-modal">
-        <h3>교회 콘텐츠 관리</h3>
-        <label>영상 주소 (네이버TV, 유튜브 등)</label>
-        <input type="text" id="input-url" class="admin-input">
-        <label>말씀 문구</label>
-        <textarea id="input-verse" class="admin-input" rows="5"></textarea>
+        <h3>콘텐츠 업데이트</h3>
+        <input type="text" id="input-url" class="admin-input" placeholder="네이버TV 주소">
+        <textarea id="input-verse" class="admin-input" rows="5" placeholder="말씀 문구"></textarea>
         <button class="btn" onclick="saveData()">저장 후 적용</button>
-        <button class="btn" style="background:#eee; color:#666; margin-top:10px;" onclick="clearComments()">방문록 전체 비우기</button>
-        <button class="btn" style="background:#ccc; margin-top:10px;" onclick="closeAdmin()">닫기</button>
+        <button class="btn" style="background:#ccc; margin-top:10px;" onclick="closeAdmin()">취소</button>
     </div>
 
     <script>
-        window.onload = function() {
-            loadContent();
-            displayComments();
-        };
+        window.onload = function() { loadContent(); displayComments(); };
 
         function loadContent() {
             const url = localStorage.getItem('church_url') || "";
@@ -95,58 +82,37 @@
 
             if (!url) return;
 
-            if (url.includes('tv.naver.com')) {
-                const naverId = url.split('/v/')[1].split(/[?#]/)[0];
-                display.innerHTML = `<iframe src="https://tv.naver.com/embed/${naverId}?autoPlay=false" allowfullscreen></iframe>`;
-            } else if (url.includes('youtube.com') || url.includes('youtu.be')) {
-                let yid = "";
-                if (url.includes('shorts/')) yid = url.split('shorts/')[1].split(/[?#]/)[0];
-                else if (url.includes('v=')) yid = url.split('v=')[1].split('&')[0];
-                else yid = url.split('/').pop().split(/[?#]/)[0];
-                display.innerHTML = `<iframe src="https://www.youtube.com/embed/${yid}?rel=0&playsinline=1" allowfullscreen></iframe>`;
-            } else {
-                display.innerHTML = `<video controls playsinline><source src="${url}" type="video/mp4"></video>`;
+            let naverId = "";
+            if (url.includes('tv.naver.com/v/')) {
+                naverId = url.split('/v/')[1].split(/[?#]/)[0];
+            } else if (url.includes('naver.me/')) {
+                naverId = url.split('/').pop().split(/[?#]/)[0];
+            } else if (url.includes('tv.naver.com/embed/')) {
+                naverId = url.split('/embed/')[1].split(/[?#]/)[0];
+            }
+
+            if (naverId) {
+                display.innerHTML = `<iframe src="https://tv.naver.com/embed/${naverId}?autoPlay=false" frameborder="no" scrolling="no" marginwidth="0" marginheight="0" allowfullscreen></iframe>`;
             }
         }
 
-        // 방문록 (성함 제외 버전)
         function addComment() {
             const message = document.getElementById('visitor-message').value;
-            if (!message) { alert("내용을 입력해주세요."); return; }
-
+            if (!message) return;
             const comments = JSON.parse(localStorage.getItem('church_comments') || "[]");
-            const newComment = {
-                message: message,
-                date: new Date().toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' })
-            };
-            
-            comments.unshift(newComment);
+            comments.unshift({ message: message, date: new Date().toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: 'numeric', minute: 'numeric' }) });
             localStorage.setItem('church_comments', JSON.stringify(comments));
-            
             document.getElementById('visitor-message').value = "";
             displayComments();
         }
 
         function displayComments() {
             const comments = JSON.parse(localStorage.getItem('church_comments') || "[]");
-            const listDiv = document.getElementById('comment-list');
-            listDiv.innerHTML = comments.map(c => `
-                <div class="comment-item">
-                    <span class="comment-text">▶ ${c.message}</span>
-                    <span class="comment-date">${c.date}</span>
-                </div>
-            `).join('');
-        }
-
-        function clearComments() {
-            if(confirm("모든 은혜의 한마디를 삭제하시겠습니까?")) {
-                localStorage.removeItem('church_comments');
-                displayComments();
-            }
+            document.getElementById('comment-list').innerHTML = comments.map(c => `<div class="comment-item">▶ ${c.message} <span style="font-size:0.7rem; color:#aaa; float:right;">${c.date}</span></div>`).join('');
         }
 
         function openAdmin() {
-            if (prompt("관리자 비밀번호를 입력하세요") === "1234") {
+            if (prompt("비밀번호 1234") === "1234") {
                 document.getElementById('admin-modal').style.display = 'block';
                 document.getElementById('input-url').value = localStorage.getItem('church_url') || "";
                 document.getElementById('input-verse').value = localStorage.getItem('church_verse') || "";
